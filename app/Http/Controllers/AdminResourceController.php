@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminResourceController extends Controller
 {
+    
+    public function __construct(){
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -57,7 +61,9 @@ class AdminResourceController extends Controller
      */
     public function show($id)
     {
-        //
+        $user=\App\Admin::find($id);
+        $data['user']=$user;
+        return view('morgue.admin.admin_personal',$data);
     }
 
     /**

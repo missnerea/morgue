@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
+    
    public function authenticate(){
        $credentials=request()->only('first_name','last_name','password');
        if(Auth::guard('admin')->attempt($credentials)){

@@ -5,6 +5,9 @@
 @stop
 
 @section('content')
+<?php
+$current_user=Auth::guard('admin')->user();
+?>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <!--
@@ -36,6 +39,11 @@
         <div class='col-md-2'>
             <input type='button' onclick="document.location.href='{{route('admin_re.create')}}'" value="Create Admin"/>
         </div>
+        
+        <div class='col-md-2'>
+            <input type='button' onclick="document.location.href='{{route('admin_re.show',['id'=>$current_user->id])}}'" value="View Personal Data"/>
+        </div>
+    
     </div>
 </div>
 @stop

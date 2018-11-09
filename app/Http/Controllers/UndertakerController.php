@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 
 class UndertakerController extends Controller
 {
+    
+    
     public function authenticate(){
        $credentials=request()->only('first_name','last_name','password');
        if(Auth::guard('undertaker')->attempt($credentials)){

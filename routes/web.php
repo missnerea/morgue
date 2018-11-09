@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
     return view('morgue.login.login');
-});
+})->name('root');
 
 Route::group(['prefix'=>'admin','as'=>'admin.'],function(){
     Route::post('login',['as'=>'login','uses'=>'AdminController@authenticate']);
