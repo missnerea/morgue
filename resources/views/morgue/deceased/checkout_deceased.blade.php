@@ -1,26 +1,27 @@
 @extends('morgue.base')
 
 @section('title')
-{{'Registration page'}}
+{{'Checkout Deceased'}}
 @stop
 
 @section('content')
+
 <div class='containter'>
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ 'Undertaker Registration' }}</div>
+                <div class="card-header">{{ 'Deceased Checkout page' }}</div>
                     <div class="card-body">
                         
                         
-        <form method='post' action="{{route('undertaker_re.store')}}">
+                        <form method='post' action="{{route('released_deceased_re.store')}}">
             {{csrf_field()}}
             
             {{----First Name----}}
             <div class="form-group row">
                 <label for='first_name' class="col-sm-4 col-form-label text-md-right">{{'First Name'}}</label>
                 <div class="col-md-6">
-                <input type='text' class="form-control" name='first_name'/>
+                    <input type='text' class="form-control" name='first_name' value='{{$deceased->first_name}}' disabled/>
                 </div>
             </div>
             
@@ -36,7 +37,7 @@
             <div class="form-group row">
                 <label for='last_name' class="col-sm-4 col-form-label text-md-right">{{'Last Name'}}</label>
                 <div class="col-md-6">
-                <input type='text' class="form-control" name='last_name'/>
+                <input type='text' class="form-control" name='last_name' value='{{$deceased->last_name}}' disabled/>
                 </div>
             </div>
             
@@ -54,8 +55,8 @@
                 <label for='gender' class="col-sm-4 col-form-label text-md-right">{{'Gender'}}</label>
                 <div class="col-md-6">
                 <div class="radio">
-                <label><input type="radio" name="gender" value='male'>Male</label>
-                <label><input type="radio" name="gender" value='female'>Female</label>
+                <label><input type="radio" name="gender" value='male' id='radio_male' disabled>Male</label>
+                <label><input type="radio" name="gender" value='female' id='radio_female' disabled>Female</label>
                 </div>
                 </div>
             </div>
@@ -69,15 +70,15 @@
             </div>') !!}
             
             
-            {{----ID Number----}}
+            {{----Cause of Death----}}
             <div class="form-group row">
-                <label for='ID_number' class="col-sm-4 col-form-label text-md-right">{{'ID number'}}</label>
+                <label for='ID_number' class="col-sm-4 col-form-label text-md-right">{{'Cause of Death'}}</label>
                 <div class="col-md-6">
-                <input type='text' class="form-control" name='ID_number'/>
+                <input type='text' class="form-control" name='cause_of_death' value='{{$deceased->cause_of_death}}' disabled/>
                 </div>
             </div>
             
-            {!!$errors->first('ID_number',
+            {!!$errors->first('cause_of_death',
             '<div class="form-group row">
                 <div class="alert alert-warning col-md-6 offset-md-4 alert-dismissible" role="alert" >
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -85,15 +86,15 @@
                 </div>
             </div>') !!}
             
-            {{----Date of Birth----}}
+            {{----Date In----}}
             <div class="form-group row">
-                <label for='dob' class="col-sm-4 col-form-label text-md-right">{{'Date of Birth'}}</label>
+                <label for='dob' class="col-sm-4 col-form-label text-md-right">{{'Date In'}}</label>
                 <div class="col-md-6">
-                <input type='date' class="form-control" name='dob'/>
+                <input type='date' class="form-control" name='date_in' value='{{$deceased->date_in}}' disabled/>
                 </div>
             </div>
             
-            {!!$errors->first('dob',
+            {!!$errors->first('date_in',
             '<div class="form-group row">
                 <div class="alert alert-warning col-md-6 offset-md-4 alert-dismissible" role="alert" >
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -101,15 +102,15 @@
                 </div>
             </div>') !!}
             
-            {{----Password----}}
+            {{----Date Out----}}
             <div class="form-group row">
-                <label for='password' class="col-sm-4 col-form-label text-md-right">{{'Password'}}</label>
+                <label for='first_name' class="col-sm-4 col-form-label text-md-right">{{'Date Out'}}</label>
                 <div class="col-md-6">
-                <input type='password' class="form-control" name='password'/>
+                    <input type='date' class="form-control" name='date_out' />
                 </div>
             </div>
             
-            {!!$errors->first('password',
+            {!!$errors->first('date_out',
             '<div class="form-group row">
                 <div class="alert alert-warning col-md-6 offset-md-4 alert-dismissible" role="alert" >
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -117,19 +118,24 @@
                 </div>
             </div>') !!}
             
-            {{----Password Confirmation----}}
-            <div class="form-group row">
-                <label for='password' class="col-sm-4 col-form-label text-md-right">{{'Password Confirmation'}}</label>
-                <div class="col-md-6">
-                <input type='password' class="form-control" name='password_confirmation'/>
-                </div>
-            </div>
-            
-            <button type="submit" class="btn btn-primary">Submit</button>
+            {{----Submit button----}}
+            <button type="submit" class="btn btn-primary" onclick="this.disabled=true;this.form.submit();">Submit</button>
         </form>
                     </div>
             </div>
         </div>
     </div>
 </div>
-@stop
+
+
+<script>
+var radio_male=document.getElementById('radio_male');
+var radio_female=document.getElementById('radio_female');
+var gender='{{$deceased->gender}}';
+
+if(gender==='male'){
+    radio_male.checked=true;
+}else{
+    radio_female.checked=true;
+}
+</script>

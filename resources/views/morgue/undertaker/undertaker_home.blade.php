@@ -26,6 +26,22 @@ $current_user=Auth::guard('undertaker')->user();
         <div class='col-md-2'>
             <input type='button' onclick="document.location.href='{{route('undertaker_re.show',['id'=>$current_user->id])}}'" value="View Personal Data"/>
         </div>
+        
+        <div class='col-md-2'>
+            <input type='button' onclick="document.location.href='{{route('undertaker_re.edit',['id'=>$current_user->id])}}'" value="Update Personal Data"/>
+        </div>
+    </div>
+    
+    <div class="row">
+        <h3>Deceased Section</h3>
+        
+        <div class='col-md-2'>
+            <input type='button' onclick="document.location.href='{{route('deceased_re.create')}}'" value="Register Deceased"/>
+        </div>
+        
+        <div class='col-md-2'>
+            <input type='button' onclick="document.location.href='{{route('deceased_re.showsearch')}}'" value="View currently held Deceased"/>
+        </div>
     </div>
 </div>
 @stop

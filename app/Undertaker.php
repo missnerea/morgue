@@ -12,5 +12,9 @@ class Undertaker extends Authenticatable{
     public function admin(){
         return $this->belongsTo(Admin::class);
     }
+    
+    public function deceased(){
+        return $this->hasMany(Deaceased::class);
+    }
 }
 

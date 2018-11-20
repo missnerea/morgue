@@ -1,3 +1,4 @@
+
 @extends('morgue.base')
 
 @section('title')
@@ -5,6 +6,9 @@
 @stop
 
 @section('content')
+<?php
+$current_user=Auth::guard('admin')->user();
+?>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <!--
@@ -29,15 +33,44 @@
 </nav>
 <div class="container">
     <div class='row'>
+        <h3>Admin Section</h3>
+        <div class='col-md-2'>
+            <input type='button' onclick="document.location.href='{{route('admin_re.create')}}'" value="Create Admin"/>
+        </div>
+        
+        <div class='col-md-2'>
+            <input type='button' onclick="document.location.href='{{route('admin_re.show',['id'=>$current_user->id])}}'" value="View Personal Data"/>
+        </div>
+        
+        <div class='col-md-2'>
+            <input type='button' onclick="document.location.href='{{route('admin_re.edit',['id'=>$current_user->id])}}'" value="Update Personal data"/>
+        </div>
+    
+    </div>
+    
+    <div class="row">
+        <h3>Undertaker Section</h3>
         <div class='col-md-2'>
             <input type='button' onclick="document.location.href='{{route('undertaker_re.create')}}'" value="Create Undertaker"/>
         </div>
         
         <div class='col-md-2'>
-            <input type='button' onclick="document.location.href='{{route('admin_re.create')}}'" value="Create Admin"/>
+            <input type='button' onclick="document.location.href='{{route('undertaker_re.showsearch')}}'" value="View Undertakers"/>
         </div>
+    </div>
+    
+    <div class="row">
+        <h3>Deceased Section</h3>
+        
+        <div class='col-md-2'>
+            <input type='button' onclick="document.location.href='{{route('deceased_re.create')}}'" value="Register Deceased"/>
+        </div>
+        
+        <div class='col-md-2'>
+            <input type='button' onclick="document.location.href='{{route('deceased_re.showsearch')}}'" value="View currently held deceased"/>
+        </div>
+     
     </div>
 </div>
 @stop
-
 

@@ -1,7 +1,7 @@
 @extends('morgue.base')
 
 @section('title')
-{{'Registration page'}}
+{{'Admin Update'}}
 @stop
 
 @section('content')
@@ -9,18 +9,17 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ 'Undertaker Registration' }}</div>
+                <div class="card-header">{{ 'Admin Update Page' }}</div>
                     <div class="card-body">
-                        
-                        
-        <form method='post' action="{{route('undertaker_re.store')}}">
+                        <form method='post' action="{{route('admin_re.update',['id'=>$user->id])}}">
             {{csrf_field()}}
+            <input type="hidden" name="_method" value="PATCH">
             
             {{----First Name----}}
             <div class="form-group row">
                 <label for='first_name' class="col-sm-4 col-form-label text-md-right">{{'First Name'}}</label>
                 <div class="col-md-6">
-                <input type='text' class="form-control" name='first_name'/>
+                    <input type='text' class="form-control" name='first_name' value='{{$user->first_name}}'/>
                 </div>
             </div>
             
@@ -36,7 +35,7 @@
             <div class="form-group row">
                 <label for='last_name' class="col-sm-4 col-form-label text-md-right">{{'Last Name'}}</label>
                 <div class="col-md-6">
-                <input type='text' class="form-control" name='last_name'/>
+                <input type='text' class="form-control" name='last_name' value='{{$user->last_name}}'/>
                 </div>
             </div>
             
@@ -48,14 +47,13 @@
                 </div>
             </div>') !!}
             
-            
             {{----Gender----}}
             <div class="form-group row">
                 <label for='gender' class="col-sm-4 col-form-label text-md-right">{{'Gender'}}</label>
                 <div class="col-md-6">
                 <div class="radio">
-                <label><input type="radio" name="gender" value='male'>Male</label>
-                <label><input type="radio" name="gender" value='female'>Female</label>
+                <label><input type="radio" name="gender" value='male' id='radio_male'>Male</label>
+                <label><input type="radio" name="gender" value='female' id='radio_female'>Female</label>
                 </div>
                 </div>
             </div>
@@ -68,12 +66,11 @@
                 </div>
             </div>') !!}
             
-            
-            {{----ID Number----}}
+            {{----ID number----}}
             <div class="form-group row">
                 <label for='ID_number' class="col-sm-4 col-form-label text-md-right">{{'ID number'}}</label>
                 <div class="col-md-6">
-                <input type='text' class="form-control" name='ID_number'/>
+                <input type='text' class="form-control" name='ID_number' value='{{$user->id_number}}'/>
                 </div>
             </div>
             
@@ -89,7 +86,7 @@
             <div class="form-group row">
                 <label for='dob' class="col-sm-4 col-form-label text-md-right">{{'Date of Birth'}}</label>
                 <div class="col-md-6">
-                <input type='date' class="form-control" name='dob'/>
+                <input type='date' class="form-control" name='dob' value='{{$user->date_of_birth}}'/>
                 </div>
             </div>
             
@@ -101,35 +98,26 @@
                 </div>
             </div>') !!}
             
-            {{----Password----}}
-            <div class="form-group row">
-                <label for='password' class="col-sm-4 col-form-label text-md-right">{{'Password'}}</label>
-                <div class="col-md-6">
-                <input type='password' class="form-control" name='password'/>
-                </div>
-            </div>
-            
-            {!!$errors->first('password',
-            '<div class="form-group row">
-                <div class="alert alert-warning col-md-6 offset-md-4 alert-dismissible" role="alert" >
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    :message 
-                </div>
-            </div>') !!}
-            
-            {{----Password Confirmation----}}
-            <div class="form-group row">
-                <label for='password' class="col-sm-4 col-form-label text-md-right">{{'Password Confirmation'}}</label>
-                <div class="col-md-6">
-                <input type='password' class="form-control" name='password_confirmation'/>
-                </div>
-            </div>
-            
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Update</button>
         </form>
                     </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+var radio_male=document.getElementById('radio_male');
+var radio_female=document.getElementById('radio_female');
+var gender='{{$user->gender}}';
+
+if(gender==='male'){
+    radio_male.checked=true;
+}else{
+    radio_female.checked=true;
+}
+</script>
 @stop
+
+
+

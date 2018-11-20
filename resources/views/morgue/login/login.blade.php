@@ -5,6 +5,11 @@
 @stop
 
 @section('content')
+<?php
+Auth::guard('admin')->logout();
+Auth::guard('undertaker')->logout();
+session()->forget('guard');
+?>
 <div class='containter'>
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -14,11 +19,18 @@
         <form method='post' id="form_login" action="{{route('admin.login')}}" >
             {{csrf_field()}}
             <div class="form-group row">
-                <label for='first_name' class="col-sm-4 col-form-label text-md-right">{{'First Name'}}</label>
+                <label for='first_name' class="col-md-4 col-form-label text-md-right">{{'First Name'}}</label>
                 <div class="col-md-6">
                 <input type='text' class="form-control" name='first_name'/>
                 </div>
             </div>
+            
+            {!!$errors->first('first_name',
+            '<div class="form-group row">
+                <div class="alert alert-warning col-md-6 offset-md-4" role="alert" >
+                    :message 
+                </div>
+            </div>') !!}
             
             <div class="form-group row">
                 <label for='last_name' class="col-sm-4 col-form-label text-md-right">{{'Last Name'}}</label>
@@ -27,12 +39,26 @@
                 </div>
             </div>
             
+            {!!$errors->first('last_name',
+            '<div class="form-group row">
+                <div class="alert alert-warning col-md-6 offset-md-4" role="alert" >
+                    :message 
+                </div>
+            </div>') !!}
+            
             <div class="form-group row">
                 <label for='password' class="col-sm-4 col-form-label text-md-right">{{'Password'}}</label>
                 <div class="col-md-6">
                 <input type='password' class="form-control" name='password'/>
                 </div>
             </div>
+            
+            {!!$errors->first('password',
+            '<div class="form-group row">
+                <div class="alert alert-warning col-md-6 offset-md-4" role="alert" >
+                    :message 
+                </div>
+            </div>') !!}
             
             <div class="form-group row">
                 <label for='select_role' class="col-sm-4 col-form-label text-md-right">{{'Select Role'}}</label>

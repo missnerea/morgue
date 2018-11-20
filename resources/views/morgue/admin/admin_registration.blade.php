@@ -13,6 +13,8 @@
                     <div class="card-body">
         <form method='post' action="{{route('admin_re.store')}}">
             {{csrf_field()}}
+            
+            {{----First Name----}}
             <div class="form-group row">
                 <label for='first_name' class="col-sm-4 col-form-label text-md-right">{{'First Name'}}</label>
                 <div class="col-md-6">
@@ -20,6 +22,15 @@
                 </div>
             </div>
             
+            {!!$errors->first('first_name',
+            '<div class="form-group row">
+                <div class="alert alert-warning col-md-6 offset-md-4 alert-dismissible" role="alert" >
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    :message 
+                </div>
+            </div>') !!}
+            
+            {{----Last Name----}}
             <div class="form-group row">
                 <label for='last_name' class="col-sm-4 col-form-label text-md-right">{{'Last Name'}}</label>
                 <div class="col-md-6">
@@ -27,6 +38,15 @@
                 </div>
             </div>
             
+            {!!$errors->first('last_name',
+            '<div class="form-group row">
+                <div class="alert alert-warning col-md-6 offset-md-4 alert-dismissible" role="alert" >
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    :message 
+                </div>
+            </div>') !!}
+            
+            {{----Gender----}}
             <div class="form-group row">
                 <label for='gender' class="col-sm-4 col-form-label text-md-right">{{'Gender'}}</label>
                 <div class="col-md-6">
@@ -37,6 +57,15 @@
                 </div>
             </div>
             
+            {!!$errors->first('gender',
+            '<div class="form-group row">
+                <div class="alert alert-warning col-md-6 offset-md-4 alert-dismissible" role="alert" >
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    :message 
+                </div>
+            </div>') !!}
+            
+            {{----ID number----}}
             <div class="form-group row">
                 <label for='ID_number' class="col-sm-4 col-form-label text-md-right">{{'ID number'}}</label>
                 <div class="col-md-6">
@@ -44,6 +73,15 @@
                 </div>
             </div>
             
+            {!!$errors->first('ID_number',
+            '<div class="form-group row">
+                <div class="alert alert-warning col-md-6 offset-md-4 alert-dismissible" role="alert" >
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    :message 
+                </div>
+            </div>') !!}
+            
+            {{----Date of Birth----}}
             <div class="form-group row">
                 <label for='dob' class="col-sm-4 col-form-label text-md-right">{{'Date of Birth'}}</label>
                 <div class="col-md-6">
@@ -51,10 +89,35 @@
                 </div>
             </div>
             
+            {!!$errors->first('dob',
+            '<div class="form-group row">
+                <div class="alert alert-warning col-md-6 offset-md-4 alert-dismissible" role="alert" >
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    :message 
+                </div>
+            </div>') !!}
+            
+            {{----Password----}}
             <div class="form-group row">
                 <label for='password' class="col-sm-4 col-form-label text-md-right">{{'Password'}}</label>
                 <div class="col-md-6">
                 <input type='password' class="form-control" name='password'/>
+                </div>
+            </div>
+            
+            {!!$errors->first('password',
+            '<div class="form-group row">
+                <div class="alert alert-warning col-md-6 offset-md-4 alert-dismissible" role="alert" >
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    :message 
+                </div>
+            </div>') !!}
+            
+            {{----Password Confirmation----}}
+            <div class="form-group row">
+                <label for='password' class="col-sm-4 col-form-label text-md-right">{{'Password Confirmation'}}</label>
+                <div class="col-md-6">
+                <input type='password' class="form-control" name='password_confirmation'/>
                 </div>
             </div>
             

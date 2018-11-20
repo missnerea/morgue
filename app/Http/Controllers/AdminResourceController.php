@@ -6,8 +6,14 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Hash;
 
+use Validator;
+
 class AdminResourceController extends Controller
 {
+    
+    public function __construct(){
+        //$this->middleware('auth:admin');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -36,6 +42,22 @@ class AdminResourceController extends Controller
      */
     public function store(Request $request)
     {
+         $rules=[
+            'first_name'=>'required|alpha',
+            'last_name'=>'required|alpha',
+            'gender'=>'required',
+            'ID_number'=>'required|integer',
+            'dob'=>'required',
+            'password'=>'required|confirmed'
+        ];
+        
+        $messages=[
+            'dob.required'=>'The Date of Birth field is required',
+            'ID_number.required'=>'The ID number field is required'
+        ];
+        
+        Validator::make($request->all(),$rules,$messages)->validate();
+        
         $data=$request->all();
         $admin=\App\Admin::create([
             'first_name'=>$data['first_name'],
@@ -57,7 +79,9 @@ class AdminResourceController extends Controller
      */
     public function show($id)
     {
-        //
+        $user=\App\Admin::find($id);
+        $data['user']=$user;
+        return view('morgue.admin.admin_personal',$data);
     }
 
     /**
@@ -68,7 +92,9 @@ class AdminResourceController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user=\App\Admin::find($id);
+        $data['user']=$user;
+        return view('morgue.admin.admin_update_personal',$data);
     }
 
     /**
@@ -80,7 +106,32 @@ class AdminResourceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $rules=[
+            'first_name'=>'required|alpha',
+            'last_name'=>'required|alpha',
+            'gender'=>'required',
+            'ID_number'=>'required|integer',
+            'dob'=>'required'
+        ];
+        
+        $messages=[
+            'dob.required'=>'The Date of Birth field is required',
+            'ID_number.required'=>'The ID number field is required'
+        ];
+        
+        Validator::make($request->all(),$rules,$messages)->validate();
+        
+        $data=$request->all();
+        $user=\App\Admin::find($id);
+        $user->first_name=$data['first_name'];
+        $user->last_name=$data['last_name'];
+        $user->gender=$data['gender'];
+        $user->id_number=$data['ID_number'];
+        $user->date_of_birth=$data['dob'];
+        $user->save();
+        
+        return redirect()->route('admin_re.index');
+        
     }
 
     /**
