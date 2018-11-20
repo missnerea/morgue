@@ -49,14 +49,14 @@ class DeceasedResourceController extends Controller
             $operator_old=session('undertaker_operator');
             $value_old=session('undertaker_value');
             
-            $records= \App\Deceased::where($column_old,$operator_old,$value_old)->paginate(6);
+            $records= \App\Deceased::where($column_old,$operator_old,$value_old)->where('date_out','=',null)->paginate(6);
             $data['records']=$records;
             return view('morgue.deceased.current_deceased_view',$data);
         } else{
         $request->session()->put('undertaker_column',$column);
         $request->session()->put('undertaker_operator',$operator);
         $request->session()->put('undertaker_value',$value);
-        $records= \App\Deceased::where($column,$operator,$value)->paginate(6);
+        $records= \App\Deceased::where($column,$operator,$value)->where('date_out','=',null)->paginate(6);
         $data['records']=$records;
         return view('morgue.deceased.current_deceased_view',$data);
         }

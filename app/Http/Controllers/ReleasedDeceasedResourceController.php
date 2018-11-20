@@ -40,8 +40,41 @@ class ReleasedDeceasedResourceController extends Controller
      */
     public function store(Request $request)
     {
-        return 'at released deceased store';
-    }
+        $rules=[
+            'first_name'=>'required|alpha',
+            'last_name'=>'required|alpha',
+            'gender'=>'required',
+            'cause_of_death'=>'required',
+            'date_in'=>'required',
+            'date_out'=>'required',
+            'charges'=>'required'
+        ];
+        /*
+        $messages=[
+            'dob.required'=>'The Date of Birth field is required',
+            'ID_number.required'=>'The ID number field is required'
+        ];
+        */
+        Validator::make($request->all(),$rules)->validate();
+        
+        $data=$request->all();
+        
+        $date_in=new \DateTime($data['date_in']);
+        $date_out=new \DateTime($data['date_out']);
+        $days_diff=$date_out->diff($date_in)->d;
+        $charges=$days_diff * 500;
+        
+        $deceased=\App\Deceased::find($data['id']);
+        $deceased->date_out=$data['date_out'];
+        $deceased->charges=$charges;
+        $deceased->save();
+        
+        if(session('guard')=='admin'){
+            return redirect()->route('admin_re.index');
+        }else if(session('guard')=='undertaker'){
+            return redirect()->route('undertaker_re.index');
+        }
+  }
 
     /**
      * Display the specified resource.
