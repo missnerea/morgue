@@ -70,6 +70,15 @@ session()->forget('guard');
                 </div>
             </div>
             
+            @if(isset($auth_error))
+            <div class="form-group row">
+                <div class="alert alert-warning col-md-6 offset-md-4 alert-dismissible" role="alert" >
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{$auth_error}}
+                </div>
+            </div>
+            @endif
+            
             <button type="submit" class="btn btn-primary" id="btn_login">Login</button>
         </form>
                     </div>

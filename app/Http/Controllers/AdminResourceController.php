@@ -6,10 +6,48 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Hash;
 
+use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Support\Facades\Gate;
+
 use Validator;
 
 class AdminResourceController extends Controller
 {
+    public function showDelete($id){
+        $user=\App\Admin::find($id);
+        $data['user']=$user;
+       return view('morgue.admin.admin_delete',$data);
+        //return $user;
+    }
+    
+    public function showSearch(){
+        return view('morgue.admin.admin_search');
+    }
+    
+    public function searchSpecific(Request $request){
+        $column=request()->get('column');
+        $operator=request()->get('operator');
+        $value=request()->get('value');
+        if(/*$column==null and $operator==null and $value==null*/$request->isMethod('get')){
+            //return 'search parameters are null';
+            
+            $column_old=session('deceased_column');
+            $operator_old=session('deceased_operator');
+            $value_old=session('deceased_value');
+            
+            $records= \App\Admin::where($column_old,$operator_old,$value_old)->where('id','!=','1')->paginate(3);
+            $data['records']=$records;
+            return view('morgue.admin.admin_search',$data);
+        } else{
+        $request->session()->put('deceased_column',$column);
+        $request->session()->put('deceased_operator',$operator);
+        $request->session()->put('deceased_value',$value);
+        $records= \App\Admin::where($column,$operator,$value)->where('id','!=','1')->paginate(3);
+        $data['records']=$records;
+        return view('morgue.admin.admin_search',$data);
+    }
+    }
     
     public function __construct(){
         //$this->middleware('auth:admin');
@@ -142,6 +180,20 @@ class AdminResourceController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $admin=\App\Admin::find($id);
+        $current_user=Auth::guard('admin')->user();
+        
+        $admin->undertakers()->get()->each(function($record) use($current_user){
+            $record->admin()->associate($current_user);
+            $record->save();
+        });
+        
+        $admin->deceased()->get()->each(function($record) use($current_user){
+            $record->admin()->associate($current_user);
+            $record->save();
+        });
+        
+        \App\Admin::destroy($id);
+        return redirect()->route('admin_re.index');
     }
 }

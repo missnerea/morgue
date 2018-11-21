@@ -21,8 +21,9 @@ $current_user=Auth::guard('undertaker')->user();
   </div>
 </nav>
 
-<div class="container">
+<div class="container-fluid">
     <div class='row'>
+        <h3>Undertaker Section</h3>
         <div class='col-md-2'>
             <input type='button' onclick="document.location.href='{{route('undertaker_re.show',['id'=>$current_user->id])}}'" value="View Personal Data"/>
         </div>
@@ -41,6 +42,10 @@ $current_user=Auth::guard('undertaker')->user();
         
         <div class='col-md-2'>
             <input type='button' onclick="document.location.href='{{route('deceased_re.showsearch')}}'" value="View currently held Deceased"/>
+        </div>
+        
+        <div class='col-md-2'>
+            <input type='button' onclick="document.location.href='{{route('released_deceased_re.showsearch')}}'" value="View released deceased"/>
         </div>
     </div>
 </div>

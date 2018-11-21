@@ -31,7 +31,7 @@ $current_user=Auth::guard('admin')->user();
     </ul>
   </div>
 </nav>
-<div class="container">
+<div class="container-fluid">
     <div class='row'>
         <h3>Admin Section</h3>
         <div class='col-md-2'>
@@ -45,7 +45,14 @@ $current_user=Auth::guard('admin')->user();
         <div class='col-md-2'>
             <input type='button' onclick="document.location.href='{{route('admin_re.edit',['id'=>$current_user->id])}}'" value="Update Personal data"/>
         </div>
-    
+        
+        {{----Super Admin section----}}
+        @if(Gate::forUser($current_user)->allows('super-admin'))
+        <div class='col-md-2'>
+            <input type='button' onclick="document.location.href='{{route('admin_re.showsearch')}}'" value="View administrators"/>
+        </div>
+        @endif
+        
     </div>
     
     <div class="row">
@@ -68,6 +75,10 @@ $current_user=Auth::guard('admin')->user();
         
         <div class='col-md-2'>
             <input type='button' onclick="document.location.href='{{route('deceased_re.showsearch')}}'" value="View currently held deceased"/>
+        </div>
+        
+        <div class='col-md-2'>
+            <input type='button' onclick="document.location.href='{{route('released_deceased_re.showsearch')}}'" value="View released deceased"/>
         </div>
      
     </div>

@@ -106,6 +106,11 @@
                 </tr>
                 @endforeach
             </tbody>
+            
+            {{----No records found message----}}
+            @if($records->isEmpty())
+            <p class="text-center">No records were found</p>
+            @endif
         </table>
         {{$records->links()}}
         </div>

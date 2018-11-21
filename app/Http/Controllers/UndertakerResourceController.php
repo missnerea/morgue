@@ -200,6 +200,14 @@ class UndertakerResourceController extends Controller
      */
     public function destroy($id)
     {
+        $undertaker=\App\Undertaker::find($id);
+        $deceased=$undertaker->deceased()->get();
+        $deceased->each(function($record){
+            $current_user=Auth::guard('admin')->user();
+            $record->undertaker()->dissociate();
+            $record->admin()->associate($current_user);
+            $record->save();
+        });
         \App\Undertaker::destroy($id);
         return redirect()->route('admin_re.index');
     }

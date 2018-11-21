@@ -27,7 +27,7 @@ class AdminController extends Controller
        //$validator=Validator::make($credentials,$rules);
        
        if(Auth::guard('admin')->attempt($credentials)){
-           //$user=Auth::guard('admin')->user();
+           $user=Auth::guard('admin')->user();
            //$data['user']=$user;
            //return $user;
            session(['guard'=>'admin']);
@@ -41,8 +41,9 @@ class AdminController extends Controller
             * 
             */
        }else{
-           //return redirect('/');
-           return 'admin authentication problem';
+           $auth_error="Username or password not found";
+           $data['auth_error']=$auth_error;
+           return view('morgue.login.login',$data);
        }
    }
    

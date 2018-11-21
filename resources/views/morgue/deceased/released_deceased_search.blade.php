@@ -19,7 +19,7 @@
         {{----Search Form----}}
         <div class="card">
             <div class="card-body">
-                    <form class="form-inline" role="form" method='post' action="{{route('deceased_re.search')}}">
+                    <form class="form-inline" role="form" method='post' action="{{route('released_deceased_re.search')}}">
                         {{csrf_field()}}
                         
                         {{----Column----}}
@@ -31,6 +31,8 @@
                             <option value="gender">Gender</option>
                             <option value="cause_of_death">Cause of Death</option>
                             <option value="date_in">Date In</option>
+                            <option value="date_out">Date Out</option>
+                            <option value="charges">Charges</option>
                         </select>
                         
                         {{----Operator----}}
@@ -58,6 +60,8 @@
     </div>
 </div>
 
+
+
 @if(isset($records))
 <div class='container mt-md-3'>
     
@@ -74,10 +78,6 @@
             <input type="button" value="Delete" class="btn " id="button_delete"/>
         </div>
         
-        {{----Checkout Button----}}
-        <div class="col-md-2">
-            <input type="button" value="Checkout" class="btn " id="button_checkout"/>
-        </div>
     </div>
     
     <div class="row  justify-content-center">
@@ -93,6 +93,8 @@
                     <th scope="col">Gender</th>
                     <th scope="col">Cause of Death</th>
                     <th scope="col">Date In</th>
+                    <th scope="col">Date Out</th>
+                    <th scope="col">Charges</th>
                 </tr>
             </thead>
             <tbody>
@@ -104,20 +106,21 @@
                     <td>{{$record->gender}}</td>
                     <td>{{$record->cause_of_death}}</td>
                     <td>{{$record->date_in}}</td>
+                    <td>{{$record->date_out}}</td>
+                    <td>{{$record->charges}}</td>
                 </tr>
                 @endforeach
             </tbody>
-            
+        </table>
             {{----No records found message----}}
             @if($records->isEmpty())
             <p class="text-center">No records were found</p>
             @endif
-        </table>
         {{$records->links()}}
         </div>
         </div>
 </div>
 @endif
 
-<script src="{{asset('js/current_deceased_view.js')}}"></script>
+<script src="{{asset('js/released_deceased_search.js')}}"></script>
 @stop

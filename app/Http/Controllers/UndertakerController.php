@@ -13,7 +13,9 @@ class UndertakerController extends Controller
            session(['guard'=>'undertaker']);
            return view('morgue.undertaker.undertaker_home');
        }else{
-           return view('morgue.login.login');
+           $auth_error="Username or password not found";
+           $data['auth_error']=$auth_error;
+           return view('morgue.login.login',$data);
        }
    }
    

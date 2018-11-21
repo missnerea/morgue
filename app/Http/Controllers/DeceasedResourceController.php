@@ -45,17 +45,17 @@ class DeceasedResourceController extends Controller
         if(/*$column==null and $operator==null and $value==null*/$request->isMethod('get')){
             //return 'search parameters are null';
             
-            $column_old=session('undertaker_column');
-            $operator_old=session('undertaker_operator');
-            $value_old=session('undertaker_value');
+            $column_old=session('deceased_column');
+            $operator_old=session('deceased_operator');
+            $value_old=session('deceased_value');
             
             $records= \App\Deceased::where($column_old,$operator_old,$value_old)->where('date_out','=',null)->paginate(6);
             $data['records']=$records;
             return view('morgue.deceased.current_deceased_view',$data);
         } else{
-        $request->session()->put('undertaker_column',$column);
-        $request->session()->put('undertaker_operator',$operator);
-        $request->session()->put('undertaker_value',$value);
+        $request->session()->put('deceased_column',$column);
+        $request->session()->put('deceased_operator',$operator);
+        $request->session()->put('deceased_value',$value);
         $records= \App\Deceased::where($column,$operator,$value)->where('date_out','=',null)->paginate(6);
         $data['records']=$records;
         return view('morgue.deceased.current_deceased_view',$data);

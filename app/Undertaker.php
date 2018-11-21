@@ -14,7 +14,7 @@ class Undertaker extends Authenticatable{
     }
     
     public function deceased(){
-        return $this->hasMany(Deaceased::class);
+        return $this->hasMany(Deceased::class);
     }
 }
 

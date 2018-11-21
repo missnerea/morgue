@@ -1,7 +1,7 @@
 @extends('morgue.base')
 
 @section('title')
-{{'Deceased Search'}}
+{{'Admin Search'}}
 @stop
 
 @section('style')
@@ -19,7 +19,7 @@
         {{----Search Form----}}
         <div class="card">
             <div class="card-body">
-                    <form class="form-inline" role="form" method='post' action="{{route('deceased_re.search')}}">
+                    <form class="form-inline" role="form" method='post' action="{{route('admin_re.search')}}">
                         {{csrf_field()}}
                         
                         {{----Column----}}
@@ -29,8 +29,8 @@
                             <option value="first_name">First Name</option>
                             <option value="last_name">Last Name</option>
                             <option value="gender">Gender</option>
-                            <option value="cause_of_death">Cause of Death</option>
-                            <option value="date_in">Date In</option>
+                            <option value="id_number">ID Number</option>
+                            <option value="date_of_birth">Date of Birth</option>
                         </select>
                         
                         {{----Operator----}}
@@ -46,10 +46,10 @@
                         
                         {{----Value----}}
                         <label for='value' class="mr-sm-2">Value</label>
-                        <input type="text" class="form-control mb-2 mr-sm-2" name="value" id='input_date'/>
+                        <input type="text" class="form-control mb-2 mr-sm-2" name="value" id='input_dob' />
                         
                         {{----Submit Button----}}
-                        <button type="submit" class="btn btn-primary mb-2" onclick="this.disabled=true;this.form.submit();">Search</button>
+                        <button type="submit" class="btn btn-primary mb-2">Search</button>
                     </form>
                 
             
@@ -73,16 +73,11 @@
         <div class="col-md-2">
             <input type="button" value="Delete" class="btn " id="button_delete"/>
         </div>
-        
-        {{----Checkout Button----}}
-        <div class="col-md-2">
-            <input type="button" value="Checkout" class="btn " id="button_checkout"/>
-        </div>
     </div>
     
     <div class="row  justify-content-center">
         
-        {{----Current Deceased Table----}}
+        {{----Undertaker Table----}}
         <div class="col-md-8">
         <table class="table table-bordered table-hover">
             <thead>
@@ -91,8 +86,8 @@
                     <th scope="col">First Name</th>
                     <th scope="col">Last Name</th>
                     <th scope="col">Gender</th>
-                    <th scope="col">Cause of Death</th>
-                    <th scope="col">Date In</th>
+                    <th scope="col">ID Number</th>
+                    <th scope="col">Date of Birth</th>
                 </tr>
             </thead>
             <tbody>
@@ -102,22 +97,25 @@
                     <td>{{$record->first_name}}</td>
                     <td>{{$record->last_name}}</td>
                     <td>{{$record->gender}}</td>
-                    <td>{{$record->cause_of_death}}</td>
-                    <td>{{$record->date_in}}</td>
+                    <td>{{$record->id_number}}</td>
+                    <td>{{$record->date_of_birth}}</td>
+                    
                 </tr>
                 @endforeach
             </tbody>
+        </table>
             
             {{----No records found message----}}
             @if($records->isEmpty())
             <p class="text-center">No records were found</p>
             @endif
-        </table>
+            
         {{$records->links()}}
         </div>
         </div>
 </div>
 @endif
 
-<script src="{{asset('js/current_deceased_view.js')}}"></script>
+<script src="{{asset('js/admin_search.js')}}"></script>
 @stop
+
