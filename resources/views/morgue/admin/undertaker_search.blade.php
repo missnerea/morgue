@@ -17,7 +17,7 @@
 <div class='container-fluid'>
     <div class="row justify-content-center">
         {{----Search Form----}}
-        <div class="card">
+        <div class="card ml-5">
             <div class="card-body">
                     <form class="form-inline" role="form" method='post' action="{{route('undertaker_re.search')}}">
                         {{csrf_field()}}
@@ -55,8 +55,14 @@
                 
             
             </div>
-        </div>      
-    </div>
+        </div> 
+        
+        <div class="col-md-3">
+        {{----Return all records button----}}
+        <button type="button" class="btn btn-primary mt-3" onclick="document.location.href='{{route('undertaker_re.return_all_records')}}'">Show all records</button>
+        </div>
+        
+      </div>
 </div>
 
 @if(isset($records))
@@ -74,6 +80,12 @@
         <div class="col-md-2">
             <input type="button" value="Delete" class="btn " id="button_delete"/>
         </div>
+        
+        {{----Change password button----}}
+        <div class="col-md-2">
+            <input type="button" value="Change Password" class="btn " id="button_change_password"/>
+        </div>
+        
     </div>
     
     <div class="row  justify-content-center">

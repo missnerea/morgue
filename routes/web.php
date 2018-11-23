@@ -20,6 +20,7 @@ Route::get('/', function () {
     //return view('morgue.deceased.current_deceased_view');
     //return view('morgue.deceased.released_deceased_search');
     //return view('morgue.admin.admin_search');
+    //return view('morgue.undertaker.undertaker_password_change');
 })->name('root');
 
 Route::get('notauth',function(){
@@ -40,6 +41,9 @@ Route::group(['prefix'=>'admin_re','as'=>'admin_re.'],function(){
     Route::match(['get','post'],'search',['as'=>'search','uses'=>'AdminResourceController@searchSpecific']);
     Route::get('showsearch',['as'=>'showsearch','uses'=>'AdminResourceController@showSearch']);
     Route::get('{id}/showdelete',['as'=>'showdelete','uses'=>'AdminResourceController@showDelete']);
+    Route::get('return_all_records',['as'=>'return_all_records','uses'=>'AdminResourceController@returnAllRecords']);
+    Route::post('{id}/change_password',['as'=>'change_password','uses'=>'AdminResourceController@changePassword']);
+    Route::get('{id}/show_password_change',['as'=>'show_password_change','uses'=>'AdminResourceController@showPasswordChange']);
 });
 
 //Undertaker resource controller
@@ -47,7 +51,9 @@ Route::group(['prefix'=>'undertaker_re','as'=>'undertaker_re.'],function(){
     Route::match(['get','post'],'search',['as'=>'search','uses'=>'UndertakerResourceController@searchSpecific']);
     Route::get('showsearch',['as'=>'showsearch','uses'=>'UndertakerResourceController@showSearch']);
     Route::get('{id}/showdelete',['as'=>'showdelete','uses'=>'UndertakerResourceController@showDelete']);
-    //Route::get('search',['as'=>'search','uses'=>'UndertakerResourceController@searchSpecific']);
+    Route::get('return_all_records',['as'=>'return_all_records','uses'=>'UndertakerResourceController@returnAllRecords']);
+    Route::post('{id}/change_password',['as'=>'change_password','uses'=>'UndertakerResourceController@changePassword']);
+    Route::get('{id}/show_password_change',['as'=>'show_password_change','uses'=>'UndertakerResourceController@showPasswordChange']);
 });
 
 //Deceased resource controller
@@ -55,6 +61,7 @@ Route::group(['prefix'=>'deceased_re','as'=>'deceased_re.'],function(){
     Route::match(['get','post'],'search',['as'=>'search','uses'=>'DeceasedResourceController@searchSpecific']);
     Route::get('showsearch',['as'=>'showsearch','uses'=>'DeceasedResourceController@showSearch']);
     Route::get('{id}/showdelete',['as'=>'showdelete','uses'=>'DeceasedResourceController@showDelete']);
+    Route::get('return_all_records',['as'=>'return_all_records','uses'=>'DeceasedResourceController@returnAllRecords']);
 });
 
 //Released Deceased resource controller
@@ -62,6 +69,7 @@ Route::group(['prefix'=>'released_deceased_re','as'=>'released_deceased_re.'],fu
     Route::match(['get','post'],'search',['as'=>'search','uses'=>'ReleasedDeceasedResourceController@searchSpecific']);
     Route::get('showsearch',['as'=>'showsearch','uses'=>'ReleasedDeceasedResourceController@showSearch']);
     Route::get('{id}/showdelete',['as'=>'showdelete','uses'=>'ReleasedDeceasedResourceController@showDelete']);
+    Route::get('return_all_records',['as'=>'return_all_records','uses'=>'ReleasedDeceasedResourceController@returnAllRecords']);
 });
 
 //Admin controller

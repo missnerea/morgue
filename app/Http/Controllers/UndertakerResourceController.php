@@ -6,9 +6,54 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Validator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class UndertakerResourceController extends Controller
 {
+    public function showPasswordChange($id){
+        $user=\App\Undertaker::find($id);
+        $view_data['user']=$user;
+        return view('morgue.undertaker.undertaker_password_change',$view_data);
+    }
+    
+    public function changePassword($id){
+        $user=\App\Undertaker::find($id);
+        $data=request()->all();
+        
+        if(session('guard')=='undertaker'){
+            
+            $rules=[
+            'old_password'=>'required',
+            'new_password'=>'required|confirmed'
+        ];
+        
+        Validator::make($data,$rules)->validate();
+        
+        if(Hash::check($data['old_password'],$user->password)){
+            $user->password=Hash::make($data['new_password']);
+            $user->save();
+    
+            return view('morgue.undertaker.undertaker_home');
+        }else{
+            $error_message="Old password does not match";
+            $view_data['error_message']=$error_message;
+            $view_data['user']=$user;
+            return view('morgue.undertaker.undertaker_password_change',$view_data);
+        }
+        }else if(session('guard')=='admin'){
+            $rules=[
+            'new_password'=>'required|confirmed'
+        ];
+        
+        Validator::make($data,$rules)->validate();
+        
+        $user->password=Hash::make($data['new_password']);
+        $user->save();
+        return view('morgue.admin.admin_home');
+        }
+    }
+    
     public function showDelete($id){
         $user=\App\Undertaker::find($id);
         $data['user']=$user;
@@ -31,14 +76,14 @@ class UndertakerResourceController extends Controller
             $operator_old=session('undertaker_operator');
             $value_old=session('undertaker_value');
             
-            $records= \App\Undertaker::where($column_old,$operator_old,$value_old)->paginate(3);
+            $records= \App\Undertaker::where($column_old,$operator_old,$value_old)->paginate(4);
             $data['records']=$records;
             return view('morgue.admin.undertaker_search',$data);
         } else{
         $request->session()->put('undertaker_column',$column);
         $request->session()->put('undertaker_operator',$operator);
         $request->session()->put('undertaker_value',$value);
-        $records= \App\Undertaker::where($column,$operator,$value)->paginate(3);
+        $records= \App\Undertaker::where($column,$operator,$value)->paginate(4);
        // $records->withPath('search');
         $data['records']=$records;
         return view('morgue.admin.undertaker_search',$data);
@@ -46,7 +91,9 @@ class UndertakerResourceController extends Controller
     }
     
     public function returnAllRecords(){
-        
+        $records=DB::table('undertakers')->paginate(4);
+        $data['records']=$records;
+        return view('morgue.admin.undertaker_search',$data);
     }
     
     public function __construct(){
@@ -91,26 +138,27 @@ class UndertakerResourceController extends Controller
             'password'=>'required|confirmed'
         ]);
         */
-        
+        $data=$request->all();
+        $data['minimum_date']=date('Y-m-d',strtotime('-18 years',strtotime(date('Y-m-d'))));
         $rules=[
             'first_name'=>'required|alpha',
             'last_name'=>'required|alpha',
             'gender'=>'required',
             'ID_number'=>'required|integer',
-            'dob'=>'required',
+            'dob'=>'required|date|before_or_equal:minimum_date',
             'password'=>'required|confirmed'
         ];
         
         $messages=[
             'dob.required'=>'The Date of Birth field is required',
-            'ID_number.required'=>'The ID number field is required'
+            'ID_number.required'=>'The ID number field is required',
+            'dob.before_or_equal'=>'The Date of Birth must be at least 18 years ago'
         ];
         
-        Validator::make($request->all(),$rules,$messages)->validate();
+        Validator::make($data,$rules,$messages)->validate();
         
         $current_admin=Auth::guard('admin')->user();
         
-        $data=$request->all();
         $undertaker=new \App\Undertaker;
         $undertaker->first_name=$data['first_name'];
         $undertaker->last_name=$data['last_name'];
@@ -160,22 +208,24 @@ class UndertakerResourceController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $data=$request->all();
+        $data['minimum_date']=date('Y-m-d',strtotime('-18 years',strtotime(date('Y-m-d'))));
          $rules=[
             'first_name'=>'required|alpha',
             'last_name'=>'required|alpha',
             'gender'=>'required',
             'ID_number'=>'required|integer',
-            'dob'=>'required'
+            'dob'=>'required|date|before_or_equal:minimum_date'
         ];
         
         $messages=[
             'dob.required'=>'The Date of Birth field is required',
-            'ID_number.required'=>'The ID number field is required'
+            'ID_number.required'=>'The ID number field is required',
+            'dob.before_or_equal'=>'The Date of Birth must be at least 18 years ago'
         ];
         
-        Validator::make($request->all(),$rules,$messages)->validate();
+        Validator::make($data,$rules,$messages)->validate();
         
-        $data=$request->all();
         $user=\App\Undertaker::find($id);
         $user->first_name=$data['first_name'];
         $user->last_name=$data['last_name'];

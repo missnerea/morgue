@@ -72,14 +72,17 @@ function makeOption(text,value){
 }
 
 ////////////////Update and delete buttons/////////////////////////////////////////
+var button_change_password=document.getElementById('button_change_password');
 var button_update=document.getElementById('button_update');
 var button_delete=document.getElementById('button_delete');
+
 
 if(button_update !== null){
 button_update.onclick=function(){
     if (!(button_update.classList.contains('button-active'))){
         button_update.classList.add('button-active');
         button_delete.classList.remove('button-active');
+        button_change_password.classList.remove('button-active');
     }
 };
 
@@ -87,6 +90,17 @@ button_delete.onclick=function(){
     if (!(button_delete.classList.contains('button-active'))){
         button_delete.classList.add('button-active');
         button_update.classList.remove('button-active');
+        button_change_password.classList.remove('button-active');
+    }
+};
+
+button_change_password.onclick=function(){
+    if (!(button_change_password.classList.contains('button-active'))){
+        
+        button_change_password.classList.add('button-active');
+        button_update.classList.remove('button-active');
+        button_delete.classList.remove('button-active');
+        
     }
 };
 }
@@ -103,6 +117,8 @@ body.onclick=function(e){
             document.location.href="http://localhost/morgue/public/index.php/admin_re/"+id+"/edit";
         }else if(button_delete.classList.contains('button-active')){
             document.location.href="http://localhost/morgue/public/index.php/admin_re/"+id+"/showdelete";
+        }else if(button_change_password.classList.contains('button-active')){
+            document.location.href="http://localhost/morgue/public/index.php/admin_re/"+id+"/show_password_change";
         }
     }
 };

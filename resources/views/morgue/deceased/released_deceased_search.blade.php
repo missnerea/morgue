@@ -56,7 +56,12 @@
                 
             
             </div>
-        </div>      
+        </div> 
+        
+         <div class="col-md-3">
+        {{----Return all records button----}}
+        <button type="button" class="btn btn-primary mt-3" onclick="document.location.href='{{route('released_deceased_re.return_all_records')}}'">Show all records</button>
+        </div>
     </div>
 </div>
 
@@ -83,7 +88,7 @@
     <div class="row  justify-content-center">
         
         {{----Current Deceased Table----}}
-        <div class="col-md-8">
+        <div class="col-md-11">
         <table class="table table-bordered table-hover">
             <thead>
                 <tr>

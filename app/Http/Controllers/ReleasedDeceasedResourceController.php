@@ -9,6 +9,12 @@ use Validator;
 
 class ReleasedDeceasedResourceController extends Controller
 {
+    public function returnAllRecords(){
+        $records=\App\Deceased::where('date_out','!=','null')->paginate(4);
+        $data['records']=$records;
+        return view('morgue.deceased.released_deceased_search',$data);
+    }
+    
     public function showDelete($id){
         $user=\App\Deceased::find($id);
         $data['user']=$user;
@@ -78,13 +84,15 @@ class ReleasedDeceasedResourceController extends Controller
      */
     public function store(Request $request)
     {
+        $data=$request->all();
+        $data['current_date']=date('Y-m-d');
         $rules=[
             'first_name'=>'required|alpha',
             'last_name'=>'required|alpha',
             'gender'=>'required',
             'cause_of_death'=>'required',
-            'date_in'=>'required',
-            'date_out'=>'required',
+            'date_in'=>'required|date|before_or_equal:current_date',
+            'date_out'=>'required|date|after:date_in|before_or_equal:current_date',
             'charges'=>'required'
         ];
         /*
@@ -93,9 +101,7 @@ class ReleasedDeceasedResourceController extends Controller
             'ID_number.required'=>'The ID number field is required'
         ];
         */
-        Validator::make($request->all(),$rules)->validate();
-        
-        $data=$request->all();
+        Validator::make($data,$rules)->validate();
         
         $date_in=new \DateTime($data['date_in']);
         $date_out=new \DateTime($data['date_out']);
@@ -147,20 +153,33 @@ class ReleasedDeceasedResourceController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $data=$request->all();
+        $data['current_date']=date('Y-m-d');
         $rules=[
             'first_name'=>'required|alpha',
             'last_name'=>'required|alpha',
             'gender'=>'required',
             'cause_of_death'=>'required',
-            'date_in'=>'required',
-            'date_out'=>'required',
+            'date_in'=>'required|date|before_or_equal:current_date',
+            'date_out'=>'required|date|after:date_in|before_or_equal:current_date',
             'charges'=>'required|numeric|integer'
         ];
+        /*
+        $messages=[
+            'date_out.gt:date_in'=>'The date_out must be greater than the date_in'
+        ];
+        */
         
         
-        Validator::make($request->all(),$rules)->validate();
         
-        $data=$request->all();
+        Validator::make($data,$rules)->validate();
+        
+        $date_in=new \DateTime($data['date_in']);
+        $date_out=new \DateTime($data['date_out']);
+        $days_diff=$date_out->diff($date_in)->d;
+        $charges=$days_diff * 500;
+        
+        
         $user= \App\Deceased::find($id);
         $user->first_name=$data['first_name'];
         $user->last_name=$data['last_name'];
@@ -168,7 +187,7 @@ class ReleasedDeceasedResourceController extends Controller
         $user->cause_of_death=$data['cause_of_death'];
         $user->date_in=$data['date_in'];
         $user->date_out=$data['date_out'];
-        $user->charges=$data['charges'];
+        $user->charges=$charges;
         $user->save();
         
         if(session('guard')=='admin'){

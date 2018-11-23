@@ -49,8 +49,12 @@ session()->forget('guard');
             <div class="form-group row">
                 <label for='password' class="col-sm-4 col-form-label text-md-right">{{'Password'}}</label>
                 <div class="col-md-6">
-                <input type='password' class="form-control" name='password'/>
+                <input type='password' class="form-control" name='password' id='input_password'/>
+                    
+                    
                 </div>
+                
+               <i class="far fa-eye-slash mt-3" id='show_password_icon'></i>
             </div>
             
             {!!$errors->first('password',
@@ -88,6 +92,7 @@ session()->forget('guard');
 </div>
 
 <script>
+//////////////////Login form action//////////////////////////////////////////////////
     var login_btn=document.getElementById('btn_login');
     var select_role=document.getElementById('select_role');
     var form_login=document.getElementById('form_login');
@@ -106,5 +111,21 @@ session()->forget('guard');
         }
     }
     */
+ 
+//////////////////Show password icon/////////////////////////////////////////////////
+   var show_password_icon=document.getElementById('show_password_icon');
+   var input_password=document.getElementById('input_password');
+   
+   show_password_icon.onmousedown=function(){
+       input_password.type='text';
+       show_password_icon.classList.remove('fa-eye-slash');
+       show_password_icon.classList.add('fa-eye');
+   };
+   
+   show_password_icon.onmouseup=function(){
+       input_password.type='password';
+       show_password_icon.classList.remove('fa-eye');
+       show_password_icon.classList.add('fa-eye-slash');
+   };
 </script>
 @stop

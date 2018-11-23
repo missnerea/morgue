@@ -31,6 +31,10 @@ $current_user=Auth::guard('undertaker')->user();
         <div class='col-md-2'>
             <input type='button' onclick="document.location.href='{{route('undertaker_re.edit',['id'=>$current_user->id])}}'" value="Update Personal Data"/>
         </div>
+        
+        <div class='col-md-2'>
+            <input type='button' onclick="document.location.href='{{route('undertaker_re.show_password_change',['id'=>$current_user->id])}}'" value="Change Password"/>
+        </div>
     </div>
     
     <div class="row">

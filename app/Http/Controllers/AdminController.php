@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use Illuminate\Support\Facades\Gate;
 
 class AdminController extends Controller
 {
@@ -32,14 +33,7 @@ class AdminController extends Controller
            //return $user;
            session(['guard'=>'admin']);
            return view('morgue.admin.admin_home');
-           /*
-           if(Auth::guard('admin')->check()){
-               return 'User is logged in';
-           }else{
-               return 'User not logged in';
-           }
-            * 
-            */
+           
        }else{
            $auth_error="Username or password not found";
            $data['auth_error']=$auth_error;

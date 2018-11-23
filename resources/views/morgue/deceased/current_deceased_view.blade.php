@@ -54,7 +54,13 @@
                 
             
             </div>
-        </div>      
+        </div>  
+        
+        <div class="col-md-3">
+        {{----Return all records button----}}
+        <button type="button" class="btn btn-primary mt-3" onclick="document.location.href='{{route('deceased_re.return_all_records')}}'">Show all records</button>
+        </div>
+        
     </div>
 </div>
 
@@ -108,11 +114,12 @@
                 @endforeach
             </tbody>
             
+            
+        </table>
             {{----No records found message----}}
             @if($records->isEmpty())
             <p class="text-center">No records were found</p>
             @endif
-        </table>
         {{$records->links()}}
         </div>
         </div>

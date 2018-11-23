@@ -9,12 +9,10 @@ use Validator;
 
 class DeceasedResourceController extends Controller
 {
-    public function showcheckoutDeceased(){
-        
-    }
-    
-    public function checkoutDeceased(){
-        
+    public function returnAllRecords(){
+        $records=\App\Deceased::where('date_out','=',null)->paginate(4);
+        $data['records']=$records;
+        return view('morgue.deceased.current_deceased_view',$data);
     }
     
     public function redirectUser($admin_route,$undertaker_route){
@@ -99,21 +97,22 @@ class DeceasedResourceController extends Controller
      */
     public function store(Request $request)
     {
+        $data=$request->all();
+        $data['current_date']=date('Y-m-d');
         $rules=[
             'first_name'=>'required|alpha',
             'last_name'=>'required|alpha',
             'gender'=>'required',
             'cause_of_death'=>'required',
-            'date_in'=>'required'
+            'date_in'=>'required|date|before_or_equal:current_date'
         ];
         
         $messages=[
             'date_in.required'=>'The Date In field is required'
         ];
         
-        Validator::make($request->all(),$rules,$messages)->validate();
+        Validator::make($data,$rules,$messages)->validate();
         
-        $data=$request->all();
         $deceased= new \App\Deceased;
         $deceased->first_name=$data['first_name'];
         $deceased->last_name=$data['last_name'];
@@ -170,21 +169,22 @@ class DeceasedResourceController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $data=$request->all();
+        $data['current_date']=date('Y-m-d');
         $rules=[
             'first_name'=>'required|alpha',
             'last_name'=>'required|alpha',
             'gender'=>'required',
             'cause_of_death'=>'required',
-            'date_in'=>'required'
+            'date_in'=>'required|date|before_or_equal:current_date'
         ];
         
         $messages=[
             'date_in.required'=>'The Date In field is required'
         ];
         
-        Validator::make($request->all(),$rules,$messages)->validate();
+        Validator::make($data,$rules,$messages)->validate();
         
-        $data=$request->all();
         $user= \App\Deceased::find($id);
         $user->first_name=$data['first_name'];
         $user->last_name=$data['last_name'];

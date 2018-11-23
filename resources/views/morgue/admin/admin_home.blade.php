@@ -46,6 +46,10 @@ $current_user=Auth::guard('admin')->user();
             <input type='button' onclick="document.location.href='{{route('admin_re.edit',['id'=>$current_user->id])}}'" value="Update Personal data"/>
         </div>
         
+        <div class='col-md-2'>
+            <input type='button' onclick="document.location.href='{{route('admin_re.show_password_change',['id'=>$current_user->id])}}'" value="Change Password"/>
+        </div>
+        
         {{----Super Admin section----}}
         @if(Gate::forUser($current_user)->allows('super-admin'))
         <div class='col-md-2'>
@@ -80,8 +84,17 @@ $current_user=Auth::guard('admin')->user();
         <div class='col-md-2'>
             <input type='button' onclick="document.location.href='{{route('released_deceased_re.showsearch')}}'" value="View released deceased"/>
         </div>
-     
+    
     </div>
+    
+    @if(isset($message))
+    <div class='row justify-content-center'>
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            Hello there
+          </div>
+    </div>
+    @endif
 </div>
 @stop
 

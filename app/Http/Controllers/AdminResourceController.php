@@ -14,6 +14,58 @@ use Validator;
 
 class AdminResourceController extends Controller
 {
+    public function showPasswordChange($id){
+        $user=\App\Admin::find($id);
+        $view_data['user']=$user;
+        return view('morgue.admin.admin_change_password',$view_data);
+    }
+    
+    public function changePassword($id){
+        $data=request()->all();
+        $user=\App\Admin::find($id);
+        $current_user=Auth::guard('admin')->user();
+        
+        if(Gate::forUser($current_user)->allows('super-admin')){
+            
+            $rules=[
+                'new_password'=>'required|confirmed'
+            ];
+            
+            Validator::make($data,$rules)->validate();
+            
+            $user->password=Hash::make($data['new_password']);
+            $user->save();
+            
+            return view('morgue.admin.admin_home');
+            
+        }else{
+        $rules=[
+            'old_password'=>'required',
+            'new_password'=>'required|confirmed'
+        ];
+        
+        Validator::make($data,$rules)->validate();
+        
+        if(Hash::check($data['old_password'],$user->password)){
+            $user->password=Hash::make($data['new_password']);
+            $user->save();
+            
+            return view('morgue.admin.admin_home');
+        }else{
+            $error_message="Old password does not match";
+            $view_data['error_message']=$error_message;
+            $view_data['user']=$user;
+            return view('morgue.admin.admin_change_password',$view_data);
+        }
+        }
+    }
+    
+    public function returnAllRecords(){
+        $records=\App\Admin::where('id','!=','1')->paginate(4);
+        $data['records']=$records;
+        return view('morgue.admin.admin_search',$data);
+    }
+    
     public function showDelete($id){
         $user=\App\Admin::find($id);
         $data['user']=$user;
@@ -80,23 +132,28 @@ class AdminResourceController extends Controller
      */
     public function store(Request $request)
     {
+        $data=$request->all();
+        $data['minimum_date']=date('Y-m-d',strtotime('-18 years',strtotime(date('Y-m-d'))));
          $rules=[
-            'first_name'=>'required|alpha',
-            'last_name'=>'required|alpha',
+            'first_name'=>'required|alpha|min:3',
+            'last_name'=>'required|alpha|min:3',
             'gender'=>'required',
-            'ID_number'=>'required|integer',
-            'dob'=>'required',
-            'password'=>'required|confirmed'
+            'ID_number'=>'required|integer|max:99999999',
+            'dob'=>'required|date|before_or_equal:minimum_date',
+            'password'=>['required','confirmed',"min:5",'max:20']
         ];
         
         $messages=[
             'dob.required'=>'The Date of Birth field is required',
-            'ID_number.required'=>'The ID number field is required'
+            'ID_number.required'=>'The ID number field is required',
+            'dob.before_or_equal'=>'The Date of Birth must be at least 18 years ago',
+            'ID_number.max'=>'Please enter a valid ID number',
+            'password.min'=>'The password must contain at least 5 characters',
+            'password.max'=>'The password must less than 20 characters',
         ];
         
-        Validator::make($request->all(),$rules,$messages)->validate();
+        Validator::make($data,$rules,$messages)->validate();
         
-        $data=$request->all();
         $admin=\App\Admin::create([
             'first_name'=>$data['first_name'],
             'last_name'=>$data['last_name'],
@@ -144,22 +201,25 @@ class AdminResourceController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $data=$request->all();
+        $data['minimum_date']=date('Y-m-d',strtotime('-18 years',strtotime(date('Y-m-d'))));
         $rules=[
             'first_name'=>'required|alpha',
             'last_name'=>'required|alpha',
             'gender'=>'required',
-            'ID_number'=>'required|integer',
-            'dob'=>'required'
+            'ID_number'=>'required|integer|max:99999999',
+            'dob'=>'required|date|before_or_equal:minimum_date',
         ];
         
         $messages=[
             'dob.required'=>'The Date of Birth field is required',
-            'ID_number.required'=>'The ID number field is required'
+            'ID_number.required'=>'The ID number field is required',
+            'dob.before_or_equal'=>'The Date of Birth must be at least 18 years ago',
+            'ID_number.max'=>'Please enter a valid ID number'
         ];
         
-        Validator::make($request->all(),$rules,$messages)->validate();
+        Validator::make($data,$rules,$messages)->validate();
         
-        $data=$request->all();
         $user=\App\Admin::find($id);
         $user->first_name=$data['first_name'];
         $user->last_name=$data['last_name'];
